@@ -10,12 +10,10 @@ services:
     environment:
      - SERVER_NAME=[MyFactory]
      - SERVER_DESCRIPTION=Having a goodtime
-     - MAX_PLAYERS=10
-     - USERNAME=fr4j4
-     - PASSWORD=madware
-     - SERVER_PASSWORD=myfactory
-     - ADMIN_NAME=fr4j4
-     - PEACEFUL_MODE=false
+     - USERNAME=your factorio username
+     - TOKEN=${TOKEN}
+     - SERVER_PASSWORD=${SERVER_PASSWORD}
+     - ADMIN_NAME=your ingame name
     volumes:
      - ./saves:/factorio/saves
     entrypoint: /factorio/run.sh

@@ -1,25 +1,50 @@
-# MyFactory
-A Docker based container for running a headless factorio server.
-## Disclaimer
-I'm not a full-time developer. The original idea was to make a Docker container that allow me deploy a Factorio headless server in any private VPS. You can fork my project to make a better solution.
+# Dockerized Factorio headless server
 
-**Contents**
+Repository to run a headless Factorio server.
 
-[TOCM]
+## Build and run
 
-[TOC]
+To build the Docker image, use the standard `docker build .` command or with `docker compose`:
 
-## Dependencies
-- Docker and docker-compose
-- You need to get the Factorio headless by your own3
+```sh
+docker compose build
+```
 
-## Deployment
-- Put the factorio headless directory in the root directory and change its name to factorio
-- Open the **docker-compose.yml** file and edit the environment variables as you want.
-- run the server with the docker-compose up -d command. 
-- Enjoy
+The server can then be started as a background process with
 
-## Known issues
-- A better way to manage saves is needed, if i can solve i will update this repo.
-- Maybe more environment variables is needed to customize the map generation.
+```sh
+docker compose up -d
+```
 
+Anyone should then be able to join the server by giving the IP and port 34197 in the Factorio client.
+
+## Configuration for host
+
+Note: secrets are stored in a `.env` file to avoid commiting these to the repo for everyone to see.
+
+In order to host multiplayer games, the server must be connected to a Factorio account.
+For best pratices, supply your username in the `docker-compose.yaml` file and your account token in an `.env` file.
+
+Secondly, a **server password** most also be provided, which is used when clients connect to the server.
+
+### Example environment file `.env`
+
+```sh
+export TOKEN=123ac1ca1219a
+export SERVER_PASSWORD=some_secret_password
+```
+
+## Game customization
+
+Note that the docker image must be rebuild and server restarted after changing these for changes to take affect.
+
+In the `settings` directory multiple files for configuring the game itself can be found.
+These has NOT been expose outside of the server, as to avoid duplicating everything.
+Configure the `server-settings.json` file to your liking with auto saves, tags, and such.
+The `map-settings.json` and `map-gen-settings.json` can be configured to create different maps to play on.
+
+## Saves
+
+Game saves are stored in a `saves` directory on the server.
+The server is configured to save the game at a given interval (can be configured in `server-settings.json`).
+If there is no default save, a new will be created, otherwise the default save will be loaded and stared with the server.
