@@ -3,17 +3,18 @@ services:
   factorio:
     container_name: factorio_server
     build: .
+    privileged: true
     ports:
-     - 34197:34197/udp
-     - 27015:27015/tcp
-     - 25575:25575
+      - 34197:34197/udp
+      - 27015:27015/tcp
+      - 25575:25575
     environment:
-     - SERVER_NAME=${SERVER_NAME}
-     - SERVER_DESCRIPTION=${SERVER_DESCRIPTION}
-     - USERNAME=${USERNAME}
-     - TOKEN=${TOKEN}
-     - SERVER_PASSWORD=${SERVER_PASSWORD}
-     - ADMIN_NAME=${ADMIN}
+      - SERVER_NAME=${SERVER_NAME}
+      - SERVER_DESCRIPTION=${SERVER_DESCRIPTION}
+      - USERNAME=${USERNAME}
+      - TOKEN=${TOKEN}
+      - SERVER_PASSWORD=${SERVER_PASSWORD}
+      - ADMIN_NAME=${ADMIN}
     volumes:
-     - ./saves:/factorio/saves
+      - ./saves:/factorio/saves
     entrypoint: /factorio/run.sh
