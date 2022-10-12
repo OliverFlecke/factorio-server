@@ -8,12 +8,12 @@ services:
      - 27015:27015/tcp
      - 25575:25575
     environment:
-     - SERVER_NAME=[MyFactory]
-     - SERVER_DESCRIPTION=Having a goodtime
-     - USERNAME=your factorio username
+     - SERVER_NAME=${SERVER_NAME}
+     - SERVER_DESCRIPTION=${SERVER_DESCRIPTION}
+     - USERNAME=${USERNAME}
      - TOKEN=${TOKEN}
      - SERVER_PASSWORD=${SERVER_PASSWORD}
-     - ADMIN_NAME=your ingame name
+     - ADMIN_NAME=${ADMIN}
     volumes:
      - ./saves:/factorio/saves
     entrypoint: /factorio/run.sh
