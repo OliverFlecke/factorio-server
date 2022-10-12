@@ -1,5 +1,7 @@
 # Currently has to run on amd64 builds (no Apple Silicon)
 FROM --platform=linux/amd64 ubuntu:jammy
+USER root
+RUN sed -i -e 's/^APT/# APT/' -e 's/^DPkg/# DPkg/' /etc/apt/apt.conf.d/docker-clean
 RUN apt-get update
 RUN apt-get install gettext-base wget tar xz-utils -y
 
