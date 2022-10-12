@@ -6,7 +6,7 @@ cp /factorio/settings/map-settings.json /factorio/map-settings.json
 
 envsubst '${SERVER_NAME},${SERVER_DESCRIPTION},${USERNAME},${PASSWORD},${TOKEN},${SERVER_PASSWORD}' < /factorio/settings/server-settings.json > /factorio/server-settings.json
 envsubst '${PEACEFUL_MODE}' < /factorio/settings/map-gen-settings.json > /factorio/map-gen-settings.json
-envsubst '${ADMIN_NAME}' < /factorio/settings/server-adminlist.json > /factorio/server-adminlist.json
+envsubst '${ADMIN}' < /factorio/settings/server-adminlist.json > /factorio/server-adminlist.json
 
 echo "\e[1;32mConfig files generation done"
 echo "\e[1;32mChecking for save file..."

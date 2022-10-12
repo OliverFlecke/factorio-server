@@ -14,7 +14,7 @@ services:
       - USERNAME=${USERNAME}
       - TOKEN=${TOKEN}
       - SERVER_PASSWORD=${SERVER_PASSWORD}
-      - ADMIN_NAME=${ADMIN}
+      - ADMIN=${ADMIN}
     volumes:
       - ./saves:/factorio/saves
     entrypoint: /factorio/run.sh
