@@ -32,6 +32,10 @@ Secondly, a **server password** most also be provided, which is used when client
 ```sh
 export TOKEN=123ac1ca1219a
 export SERVER_PASSWORD=some_secret_password
+export ADMIN=admin
+export USERNAME=factorio_username
+export SERVER_NAME="[Your Amazing Factory]"
+export SERVER_DESCRIPTION="some description"
 ```
 
 ## Game customization
