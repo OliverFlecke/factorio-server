@@ -6,8 +6,10 @@ RUN apt-get update
 RUN apt-get install gettext-base wget tar xz-utils -y
 
 WORKDIR /
+
+ARG VERSION=stable
 # Download and extract headless factorio server
-RUN wget https://factorio.com/get-download/stable/headless/linux64
+RUN wget https://factorio.com/get-download/$VERSION/headless/linux64
 RUN tar -xf linux64 && rm linux64
 
 WORKDIR /factorio
