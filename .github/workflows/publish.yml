@@ -20,6 +20,11 @@ jobs:
 
       - uses: actions/checkout@v3
 
+      - name: Get Factorio version
+        run: |
+          version=$(curl -s https://www.factorio.com/download/archive/ | grep -o '/download/archive/\d*\.\d*\.\d*' | sed 's/\/download\/archive\///' | sort | tail -n 1)
+          echo "VERSION=${version} >> ${GITHUB_ENV}"
+
       - name: Login to container registry
         uses: redhat-actions/podman-login@v1
         with:
@@ -32,7 +37,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: factorio-server
-          tags: latest stable ${{ github.sha }}
+          tags: latest stable ${{ github.sha }} ${{ env.VERSION }}
           platforms: linux/amd64
           containerfiles: Dockerfile
           layers: true
