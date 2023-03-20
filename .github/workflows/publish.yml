@@ -24,8 +24,10 @@ jobs:
 
       - name: Get Factorio version
         run: |
+          set -e
+
           version=$(curl -s https://www.factorio.com/download/archive/ | grep -o '/download/archive/\d*\.\d*\.\d*' | sed 's/\/download\/archive\///' | sort | tail -n 1)
-          echo "version: $version"
+          echo "Found version: $version"
           echo VERSION=$version >> ${GITHUB_ENV}
 
       - name: Login to container registry
