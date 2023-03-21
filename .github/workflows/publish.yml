@@ -13,7 +13,7 @@ env:
 jobs:
   build-and-publish-image:
     name: Build and publish image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Set lower case owner name
         run: echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
@@ -24,9 +24,20 @@ jobs:
 
       - name: Get Factorio version
         run: |
-          set -e
+          apt update
+          apt install curl -y 
 
-          version=$(curl -s https://www.factorio.com/download/archive/ | grep -o '/download/archive/\d*\.\d*\.\d*' | sed 's/\/download\/archive\///' | sort | tail -n 1)
+          echo "### Fininshed installing dependencies ###"
+
+          curl -s -o content.html https://www.factorio.com/download/archive/
+          version=$(cat content.html | grep -o '/download/archive/.*' \
+            | sed 's/\/download\/archive\///' \
+            | sed 's/"//' \
+            | sort \
+            | tail -n 1)
+
+          rm content.html
+
           echo "Found version: $version"
           echo VERSION=$version >> ${GITHUB_ENV}
 
