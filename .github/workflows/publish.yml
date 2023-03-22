@@ -29,22 +29,7 @@ jobs:
         run: python -m pip install requests
 
       - name: Get Factorio version
-        run: python extract.py
-
-      # - name: Get Factorio version
-      #   run: |
-      #     /usr/bin/curl --version
-      #     curl -s -o content.html https://www.factorio.com/download/archive/
-      #     version=$(cat content.html | grep -o '/download/archive/.*' \
-      #       | sed 's/\/download\/archive\///' \
-      #       | sed 's/"//' \
-      #       | sort \
-      #       | tail -n 1)
-
-      #     rm content.html
-
-      #     echo "Found version: $version"
-      #     echo VERSION=$version >> ${GITHUB_ENV}
+        run: echo "VERSION=$(python extract.py)" >> ${GITHUB_ENV}
 
       - name: Login to container registry
         uses: redhat-actions/podman-login@v1
