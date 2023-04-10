@@ -1,5 +1,7 @@
 # Dockerized Factorio headless server
 
+[![Build and publish image](https://github.com/OliverFlecke/factorio-server/actions/workflows/publish.yml/badge.svg?branch=main)](https://github.com/OliverFlecke/factorio-server/actions/workflows/publish.yml)
+
 Repository to run a headless Factorio server.
 
 ## Build and run
