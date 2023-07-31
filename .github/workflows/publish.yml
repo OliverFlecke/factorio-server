@@ -64,6 +64,7 @@ jobs:
             type=ref,event=pr
             type=sha,format=long
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ env.get-version.outputs.VERSION }}
 
       - name: Build image
         id: build-image
