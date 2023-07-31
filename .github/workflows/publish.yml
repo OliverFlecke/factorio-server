@@ -37,7 +37,7 @@ jobs:
     steps:
       - run: echo ${{ matrix.platform}} / ${{ matrix.version }}
       - id: get-version
-        run: echo "VERSION=$(echo ${{matrix.version}} | cut -d ':' -f 2)" >> $GITHUB_OUTPUT
+        run: echo "VERSION=$(echo ${{ matrix.version }} | cut -d ':' -f 2)" >> $GITHUB_OUTPUT
       - id: get-tag
         run: echo "TAG=$(echo ${{ matrix.version }} | cut -d ':' -f 1)" >> $GITHUB_OUTPUT
 
@@ -66,8 +66,8 @@ jobs:
             type=ref,event=pr
             type=sha,format=long
             type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=${{ env.get-version.outputs.VERSION }}
-            type=raw,value=${{ env.get-tag.outputs.TAG }}
+            type=raw,value=${{ steps.get-version.outputs.VERSION }}
+            type=raw,value=${{ steps.get-tag.outputs.TAG }}
 
       - name: Build image
         id: build-image
