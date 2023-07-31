@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform: [amd64, arm64]
+        platform: [amd64]
 
     steps:
       - name: Set lower case owner name
