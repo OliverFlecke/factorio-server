@@ -9,11 +9,16 @@ on:
 
 env:
   CONTAINER_REGISTRY: ghcr.io
+  IMAGE_NAME: factorio-server
 
 jobs:
   build-and-publish-image:
     name: Build and publish image
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [amd64, arm64]
+
     steps:
       - name: Set lower case owner name
         run: echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
@@ -36,36 +41,40 @@ jobs:
         env:
           GHCR_TOKEN: ${{ steps.set-ghcr-token.outputs.GHCR_TOKEN }}
 
+      - uses: docker/setup-buildx-action@v1
+
       - name: Login to container registry
-        uses: redhat-actions/podman-login@v1
+        uses: docker/login-action@v2
         if: ${{ steps.get-version.outputs.VERSION != '' }}
         with:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: ${{ env.CONTAINER_REGISTRY }}/${{ env.OWNER_LC }}
+          registry: ${{ env.CONTAINER_REGISTRY }}
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        if: ${{ steps.get-version.outputs.VERSION != '' }}
+        with:
+          images: |
+            ${{ env.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,format=long
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build image
         id: build-image
+        uses: docker/build-push-action@v4
         if: ${{ steps.get-version.outputs.VERSION != '' }}
-        uses: redhat-actions/buildah-build@v2
         with:
-          image: factorio-server
-          tags: latest ${{ github.sha }} ${{ env.VERSION }}
-          platforms: linux/amd64
-          containerfiles: Dockerfile
-          layers: true
+          platforms: linux/${{ matrix.platform }}
+          push: true
+          cache-from: type=registry,ref=${{ env.CONTAINER_REGISTRY }}/${{ env.OWNER_LC }}/${{ env.IMAGE_NAME }}:buildcache-${{ matrix.platform }}
+          cache-to: type=registry,ref=${{ env.CONTAINER_REGISTRY }}/${{ env.OWNER_LC }}/${{ env.IMAGE_NAME }}:buildcache-${{ matrix.platform }},mode=max
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
         env:
           VERSION: ${{ steps.get-version.outputs.VERSION }}
-
-      - name: Push image
-        id: push-image
-        if: ${{ steps.get-version.outputs.VERSION != '' }}
-        uses: redhat-actions/push-to-registry@v2
-        with:
-          registry: ${{ env.CONTAINER_REGISTRY }}/${{ env.OWNER_LC }}
-          image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ steps.build-image.outputs.tags }}
-
-      - name: Print image url
-        if: ${{ steps.get-version.outputs.VERSION != '' }}
-        run: echo "Image pushed to ${{ steps.push-image.outputs.registry-paths }}"
