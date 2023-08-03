@@ -63,7 +63,7 @@ jobs:
             ${{ env.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,format=long
-            type=raw,value=latest,enable={{ is_default_branch && steps.get-tag.outputs.TAG == 'experimental' }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') && steps.get-tag.outputs.TAG == 'experimental' }}
             type=raw,value=${{ steps.get-version.outputs.VERSION }}
             type=raw,value=${{ steps.get-tag.outputs.TAG }}
 
