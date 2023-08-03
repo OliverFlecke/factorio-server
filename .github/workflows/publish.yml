@@ -62,9 +62,6 @@ jobs:
           images: |
             ${{ env.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
             type=sha,format=long
             type=raw,value=latest,enable={{ is_default_branch && steps.get-tag.outputs.TAG == 'experimental' }}
             type=raw,value=${{ steps.get-version.outputs.VERSION }}
