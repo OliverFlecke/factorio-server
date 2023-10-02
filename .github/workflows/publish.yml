@@ -13,7 +13,7 @@ env:
   IMAGE_NAME: factorio-server
 
 jobs:
-  get-versions: 
+  get-versions:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get install curl jq
