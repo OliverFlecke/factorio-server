@@ -1,11 +1,16 @@
 # Currently has to run on amd64 builds (no Apple Silicon)
-FROM --platform=linux/amd64 ubuntu:jammy
+FROM ubuntu:24.04
 USER root
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN sed -i -e 's/^APT/# APT/' -e 's/^DPkg/# DPkg/' /etc/apt/apt.conf.d/docker-clean \
   && apt-get update \
-  && apt-get install gettext-base wget tar xz-utils -y --no-install-recommends \
+  && apt-get install -y --no-install-recommends \
+    gettext-base \
+    wget \
+    tar \
+    xz-utils \
+    ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
@@ -20,3 +25,5 @@ WORKDIR /factorio
 COPY ./settings ./settings
 COPY *.sh /factorio/
 RUN chmod +x ./*.sh
+
+USER guest
